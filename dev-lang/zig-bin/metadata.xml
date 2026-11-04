@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gtlaserbeast@icloud.com</email>
+		<name>Will Fisher</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="codeberg">ziglang/zig</remote-id>
+		<bugs-to>https://codeberg.org/ziglang/zig/issues</bugs-to>
+	</upstream>
+</pkgmetadata>

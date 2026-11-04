@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gtlaserbeast@icloud.com</email>
+		<name>Will Fisher</name>
+	</maintainer>
+	<longdescription>
+		Ly is a lightweight TUI display manager for Linux, with animated
+		login screens, custom sessions and Lua animations.
+	</longdescription>
+	<upstream>
+		<remote-id type="codeberg">fairyglade/ly</remote-id>
+		<bugs-to>https://codeberg.org/fairyglade/ly/issues</bugs-to>
+	</upstream>
+</pkgmetadata>
