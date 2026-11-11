@@ -57,44 +57,6 @@ RDEPEND="
 # https://github.com/ziglang/zig/issues/3382
 QA_FLAGS_IGNORED="usr/bin/ly"
 
-pkg_setup() {
-	[[ ${MERGE_TYPE} != binary ]] || return 0
-
-	# zig-utils_find_installation only knows versions up to 0.16.0 and
-	# dies on ZIG_SLOT=0.17, but it is skipped when ZIG_EXE is already
-	# set.  Drop this once the eclass lists 0.17.x.
-	if [[ -z ${ZIG_EXE} ]]; then
-		local candidates=( "${BROOT}"/usr/bin/zig-bin-"${ZIG_SLOT}".* )
-		[[ -x ${candidates[-1]} ]] ||
-			die "Could not find Zig ${ZIG_SLOT} in ${BROOT}/usr/bin"
-		ZIG_EXE="${candidates[-1]}"
-		ZIG_VER="${ZIG_EXE##*-}"
-	fi
-
-	zig_pkg_setup
-
-	# The libc file written by zig_init_base_args has the 0.16 format:
-	# 0.17 renamed gcc_dir to cc_dir and added darwin_sdk_dir.
-	local crtbegin
-	crtbegin=$("$(tc-getCC)" -print-file-name=crtbegin.o) || die
-	sed -i -e "s|^gcc_dir=.*|cc_dir=${crtbegin%/*}|" "${T}/zig_libc.txt" || die
-	echo "darwin_sdk_dir=" >> "${T}/zig_libc.txt" || die
-}
-
-src_unpack() {
-	zig_src_unpack
-
-	# zig_src_prepare points --system at ZIG_LOCAL_PKG_DIR and expects
-	# unpacked packages there, but "zig fetch" from Zig 0.17 only leaves
-	# a compacted copy in the global cache, so unpack them ourselves.
-	local dep dir
-	for dep in "${!ZBS_DEPENDENCIES[@]}"; do
-		dir="${ZIG_LOCAL_PKG_DIR}/${dep%.tar.gz}"
-		mkdir -p "${dir}" || die
-		tar -xf "${DISTDIR}/${dep}" -C "${dir}" --strip-components=1 || die
-	done
-}
-
 src_prepare() {
 	zig_src_prepare
 

@@ -12,7 +12,8 @@ emaint sync -r ly-overlay
 emerge --ask x11-misc/ly
 ```
 
-Both packages are keyworded `~amd64`; on a stable system accept them with
+`x11-misc/ly` is keyworded `~amd64`, and it builds with `dev-lang/zig-bin:0.17`
+from `::gentoo`, which may also be `~amd64`. On a stable system accept both with
 
 ```sh
 printf '%s\n' 'x11-misc/ly ~amd64' 'dev-lang/zig-bin ~amd64' \
@@ -24,10 +25,9 @@ printf '%s\n' 'x11-misc/ly ~amd64' 'dev-lang/zig-bin ~amd64' \
 | Package | Description |
 | --- | --- |
 | `x11-misc/ly` | TUI display manager |
-| `dev-lang/zig-bin:0.17` | Zig 0.17 binary release, amd64 only |
 
-`dev-lang/zig-bin` installs alongside other Zig slots and goes away once
-`::gentoo` has `zig-bin:0.17`.
+This overlay used to carry `dev-lang/zig-bin:0.17` as well; it was dropped once
+`::gentoo` got `zig-bin-0.17.1`.
 
 ## Upgrading from 1.4.x
 
@@ -60,14 +60,14 @@ ebuild substitutes it, so sessions pick up `/etc/profile` once you merge the
 new file with `dispatch-conf`.
 
 Old options are migrated at startup, so an unmerged 1.4 `config.ini` still
-loads. `--validate-config` isn't in 1.5.0.
+loads. `ly --validate-config /etc/ly/config.ini` checks the file without
+touching the tty; it catches bad values, not misspelled option names.
 
 ## Ebuild notes
 
-`ly-1.5.0.ebuild` works around three places where `zig*.eclass` doesn't
-support Zig 0.17 yet: the list of known versions, unpacking dependencies into
-the folder form `--system` needs, and the format of the libc paths file. Each
-is commented, and each can go once the eclass catches up.
+`ly-1.5.0.ebuild` is a plain `zig.eclass` ebuild. Earlier revisions worked
+around missing Zig 0.17 support in the eclass; those workarounds were removed
+once `::gentoo` gained it, so sync `::gentoo` before building.
 
 Bugs in the ebuilds go to this repo's issues; bugs in Ly itself go to
 [Ly's issues](https://codeberg.org/fairyglade/ly/issues).
